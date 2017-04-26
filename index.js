@@ -39,7 +39,7 @@ var runTests = (response, tests, globalVars, env) => {
         try {
             script.runInContext(context);
         } catch(e) {
-            tests['Script execute without throwing an exception'] = false;   
+            tests['Script execute without throwing an exception'] = false;
         }
     });
     return sandbox.tests;
@@ -72,13 +72,14 @@ exports.execute = (collection, options) => {
                 headers: headers,
                 body: (req.body && req.body.raw && req.body.raw !== '') ? req.body.raw : undefined
             };
-            request(r, (error, response, body) => {
+            try {
+              request(r, (error, response, body) => {
                 if (error) {
                     console.log(colors.red(error));
                     defered.reject(error);
                 } else {
                     console.log(`${printStatusCode(response.statusCode)} ${item.name} ${colors.cyan(`[${req.method}]`)} ${url}`);
-        let results = runTests(response, item.event.filter(event => event.listen === 'test' && event.script.type === 'text/javascript'), globalVars, env);
+                    let results = runTests(response, item.event.filter(event => event.listen === 'test' && event.script.type === 'text/javascript'), globalVars, env);
                     let tests = 0;
                     let failures = 0;
                     let cases = [];
@@ -132,7 +133,10 @@ exports.execute = (collection, options) => {
                     }
                 }
             });
-            return defered.promise;
+          } catch (e) {
+            console.log(colors.red(r.uri));
+          }
+          return defered.promise;
     });
     let sequential = collection.item.reduce((result, item) => { return result === true || item.request.method.toUpperCase() !== 'GET'; } , false);
     return (
