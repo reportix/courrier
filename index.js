@@ -173,14 +173,14 @@ exports.execute = (collection, options) => {
     testRequest.header.forEach(header => {
         headers[header.key] = header.value;
     });
-    let options = {
+    let httpOptions = {
         headers: headers,
         body: (testRequest.body && testRequest.body.raw && testRequest.body.raw !== '') ? testRequest.body.raw : undefined,
-        timeout: 90000,
-        socketTimeout: 90000
+        timeout: options.timeout || 90000,
+        socketTimeout: options.socketTimeout || 90000
     };
     let method = testRequest.method;
-    failures += runTest(method, url, options, testRequest, item, globalVars, env, xw);
+    failures += runTest(method, url, httpOptions, testRequest, item, globalVars, env, xw);
 
     console.log('[ END ] ' + item.name + '\n');
   });
