@@ -203,6 +203,6 @@ exports.execute = (collection, options) => {
   }
   else
   {
-    console.log(colors.green(`${failures}/${collection.item.length} testsuites passed`));
+    console.log(colors.green(`${collection.item.length}/${collection.item.length} testsuites passed`));
   }
 };
