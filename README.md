@@ -1,34 +1,4 @@
 # Courrier
 
-Postman/Newman runner that runs requests in parallel.
+Postman/Newman runner that reliably runs requests one after the other.
 
-[![Circle CI](https://circleci.com/gh/wcandillon/courrier/tree/master.svg?style=svg)](https://circleci.com/gh/wcandillon/courrier/tree/master) [![NPM version](http://img.shields.io/npm/v/courrier.svg?style=flat)](http://badge.fury.io/js/courrier)
-
-## Usage
-
-```js
-const courrier = require('courrier');
-
-const options = {
-    envJson: {
-        id:'7a04c166-1f65-509b-0d3d-7463182e17c9',
-        sequential: true, //sequential execution
-        name:'CellStore',
-        values: [{
-            key: 'endpoint',
-            value: Config['28'].projectEndpoint,
-            type:'text',
-            enabled: true
-        }],
-        timestamp: new Date().getTime()
-    },
-    iterationCount: 1,
-    delay: 1,
-    responseHandler: 'TestResponseHandler',
-    requestTimeout: 300000
-};
-courrier.execute(JSON.parse(fs.readFileSync('/path/to/postman/collection.json', 'utf-8')), options)
-    .then(() => console.log('All tests passed'))
-    .catch(() => console.log('Some tests failed'))
-;
-```
