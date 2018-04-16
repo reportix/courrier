@@ -169,6 +169,14 @@ exports.execute = (collection, options) => {
     _.forEach(env, (value, key) => {
         url = url.replace(new RegExp(`{{${key}}}`, 'g'), value);
     });
+    if (options.regenerateExpected === true) {
+      if (url.includes("\?")) {
+        url = url + "&_mode=regenerate-expected";
+      }
+      else {
+        url = url + "?_mode=regenerate-expected";
+      }
+    }
     let headers = {};
     testRequest.header.forEach(header => {
         headers[header.key] = header.value;
